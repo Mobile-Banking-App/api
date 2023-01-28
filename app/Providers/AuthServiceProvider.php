@@ -30,6 +30,8 @@ class AuthServiceProvider extends ServiceProvider
             Passport::routes();
         }
 
+        Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
+
         Passport::tokensCan([
             'admin' => 'Admin User Type',
             'user' => 'User User Type'

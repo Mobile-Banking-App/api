@@ -21,7 +21,7 @@ class PinController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'error in validating data',
-                'errors' => $validator->errors()
+                'errors' => $validator->errors()->all()
             ], 422);
         }
 
@@ -41,7 +41,7 @@ class PinController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'error in validating data',
-                'errors' => $validator->errors()
+                'errors' => $validator->errors()->all()
             ], 422);
         }
 
@@ -60,7 +60,7 @@ class PinController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'error in validating data',
-                'errors' => $validator->errors()
+                'errors' => $validator->errors()->all()
             ], 422);
         }
 

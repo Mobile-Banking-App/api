@@ -46,6 +46,11 @@ return [
             'provider' => 'profiles',
         ],
 
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'profiles',
+        ],
+
         'user-api' => [
             'driver' => 'passport',
             'provider' => 'profiles',

@@ -25,6 +25,5 @@ class RegisterController extends Controller
 
         $register = new RegisterRepository;
         return $register->create($request->all());
-
     }
 }

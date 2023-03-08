@@ -45,17 +45,14 @@ return [
             'driver' => 'session',
             'provider' => 'profiles',
         ],
-
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'profiles',
-        ],
-
         'user-api' => [
             'driver' => 'passport',
             'provider' => 'profiles',
         ],
-
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'profiles',
+        ],
         'admin-api' => [
             'driver' => 'passport',
             'provider' => 'profiles',

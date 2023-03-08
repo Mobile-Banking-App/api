@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Auth\AuthenticationException;
+
 
 class Handler extends ExceptionHandler
 {
@@ -27,6 +30,20 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json([
+                "status" => false,
+                "message" => "Please login to have access"
+            ], 401);
+        }
+
+        // return redirect()->guest('login');
+    }
+
+
     /**
      * Register the exception handling callbacks for the application.
      *
@@ -37,5 +54,16 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    "status" => false,
+                    'message' => 'Route Not found.'
+                ], 404);
+            }
+        });
     }
+
 }
+

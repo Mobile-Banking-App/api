@@ -38,4 +38,9 @@ Route::middleware(['auth:user-api', 'scopes:user'])->group(function () {
 
     Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
+    Route::controller(\App\Http\Controllers\User\TransactionController::class)->prefix('transactions')->group(function () {
+        Route::get('', 'index');
+        Route::post('', 'store');
+    });
+
 });

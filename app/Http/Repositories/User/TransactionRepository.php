@@ -2,6 +2,7 @@
 namespace App\Http\Repositories\User;
 
 use App\Models\Transaction;
+use App\Models\User;
 
 class TransactionRepository
 {
@@ -9,7 +10,8 @@ class TransactionRepository
     {
         $data['reference_id'] = \Str::upper(\Str::random(10));
 
-        $transaction = Transaction::create($data);
+        $user = User::find(auth()->guard('user-api')->user()->profileable_id);
+        $transaction = $user->transactions()->create($data);
 
         if ($transaction) {
             return response()->json([

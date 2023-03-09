@@ -6,13 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\TransactionRequest;
 use App\Http\Repositories\User\TransactionRepository;
+use App\Models\Transaction;
+use App\Models\User;
 
 
 class TransactionController extends Controller
 {
     public function index()
     {
-
+        $user = User::find(auth()->guard('user-api')->user()->profileable_id);
+        $transactions = $user->transactions;
+        return response()->json([
+            "status" => true,
+            "message" => "Transaction fetched successfully",
+            "transactions" => $transactions
+        ], 200);
     }
 
 
@@ -32,4 +40,22 @@ class TransactionController extends Controller
         $transactionRepository = new TransactionRepository;
         return $transactionRepository->store($request->all());
     }
+
+
+    public function destroy(Transaction $transaction)
+    {
+        if ($transaction->delete()) {
+            return response()->json([
+                "status" => true,
+                "message" => "Transaction deleted successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "status" => false,
+                "message" => "An unexpected error occurred!"
+            ], 500);
+        }
+    }
+
+
 }

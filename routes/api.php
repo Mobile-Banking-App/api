@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\TransactionDetailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,5 @@ Route::get('test', function () {
 
 
 Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
+
+Route::apiResource('transaction', TransactionDetailsController::class);

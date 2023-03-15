@@ -21,7 +21,7 @@ class CreateTransactionsTable extends Migration
                     ->onDelete('cascade');
             $table->string('reference_id');
             $table->string('account_name');
-            $table->integer('account_number');
+            $table->string('account_number');
             $table->string('bank_name');
             $table->float('amount', 11, 2);
             $table->enum('status', ['successful', 'failed', 'pending']);

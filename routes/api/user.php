@@ -44,4 +44,9 @@ Route::middleware(['auth:user-api', 'scopes:user'])->group(function () {
         Route::delete('/{transaction}', 'destroy');
     });
 
+    Route::controller(\App\Http\Controllers\User\P2PController::class)->prefix('p2p')->group(function () {
+        Route::get('{number}', 'userData');
+        Route::post('', 'store');
+    });
+
 });

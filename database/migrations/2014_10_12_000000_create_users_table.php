@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('duress_pin')->nullable();
             $table->integer('completed_profile')->default(1);
             $table->float('wallet_balance', 11, 2)->default(0);
+            $table->float('safe_balance', 11, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

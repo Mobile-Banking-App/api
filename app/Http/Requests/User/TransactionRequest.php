@@ -26,6 +26,7 @@ class TransactionRequest extends FormRequest
         return [
             "account_name" => ["required", "string", "max:191"],
             "account_number" => ["required", "numeric", "digits:10"],
+            "pin" => ["required", "numeric", "digits:4"],
             "bank_name" => ["required", "string", "max:191"],
             "amount" => ["required", "numeric", "min:5"],
             "status" => ["required", "string", "in:successful,failed,pending"]

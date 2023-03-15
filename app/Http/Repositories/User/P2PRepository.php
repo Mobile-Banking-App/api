@@ -5,7 +5,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class TransactionRepository
+class P2PRepository
 {
     public function store($data)
     {
@@ -36,6 +36,8 @@ class TransactionRepository
 
     protected function transfer($data, $user)
     {
+        $receiver = User::where('account_number', $data['account_number'])->first();
+
         if ($data['amount'] > $user->wallet_balance) {
             return response()->json([
                 "status" => false,
@@ -46,6 +48,9 @@ class TransactionRepository
         if ($data['status'] == 'successful') {
             $user->wallet_balance -= $data['amount'];
             $user->save();
+
+            $receiver->wallet_balance += $data['amount'];
+            $receiver->save();
         }
 
         $transaction = $user->transactions()->create($data);
@@ -64,5 +69,4 @@ class TransactionRepository
             ], 500);
         }
     }
-
 }

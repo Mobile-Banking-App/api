@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Model
 {
@@ -45,4 +46,15 @@ class User extends Model
     {
         return $this->hasMany(\App\Models\Transaction::class, 'user_id', 'id');
     }
+
+    /**
+     * Get the card associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function card(): HasOne
+    {
+        return $this->hasOne(\App\Models\Card::class, 'user_id', 'id');
+    }
+
 }

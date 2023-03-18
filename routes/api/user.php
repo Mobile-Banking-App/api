@@ -49,4 +49,11 @@ Route::middleware(['auth:user-api', 'scopes:user'])->group(function () {
         Route::post('', 'store');
     });
 
+    Route::controller(\App\Http\Controllers\User\CardController::class)->prefix('card')->group(function () {
+        // Route::get('', 'userData');
+        Route::post('request', 'requestCard');
+        Route::post('card-pin', 'cardPin');
+        Route::post('duress-pin', 'duressPin');
+    });
+
 });

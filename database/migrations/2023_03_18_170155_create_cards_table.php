@@ -25,6 +25,7 @@ class CreateCardsTable extends Migration
             $table->string('card_pin')->nullable();
             $table->string('duress_pin')->nullable();
             $table->enum('card_type', ['visa', 'verve', 'mastercard'])->nullable();
+            $table->enum('status', ['active', 'blocked', 'suspended'])->nullable();
             $table->timestamps();
         });
     }

@@ -10,10 +10,23 @@ use App\Http\Repositories\User\CardRepository;
 
 class CardController extends Controller
 {
-    public function requestCard()
+    public function requestCard(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'card_pin' => 'required|numeric|digits:4',
+            'duress_pin' => 'required|numeric|digits:4',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'error in validating data',
+                'errors' => $validator->errors()->all()
+            ], 422);
+        }
+
         $cardRepo = new CardRepository;
-        return $cardRepo->generateCard();
+        return $cardRepo->generateCard($request->all());
     }
 
 
@@ -51,6 +64,12 @@ class CardController extends Controller
 
         $cardRepo = new CardRepository;
         return $cardRepo->set_duress_pin($request->all());
+    }
+
+    public function destroy($id)
+    {
+        $cardRepo = new CardRepository;
+        return $cardRepo->delete($id);
     }
 
 }

@@ -27,7 +27,8 @@ class User extends Model
         'passcode',
         'transaction_pin',
         'duress_pin',
-        'wallet_balance'
+        'wallet_balance',
+        'safe_balance'
     ];
 
 

@@ -19,7 +19,7 @@ class P2PController extends Controller
             return response()->json([
                 "status" => true,
                 "message" => "User found",
-                "transactions" => $user
+                "user" => $user
             ], 200);
         } else {
             return response()->json([

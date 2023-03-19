@@ -28,7 +28,7 @@ class RegisterRepository {
                 if (auth()->guard('user')->attempt(['email' => $data['email'], 'password' => $data['password']])) {
 
                     $user_profile = Profile::find(auth()->guard('user')->user()->id);
-                    $user_data = User::find(auth()->guard('user')->user()->profileable_id);
+                    $user_data = User::with('otps')->find(auth()->guard('user')->user()->profileable_id);
                     $token = auth()->guard('user')->user()->createToken('My Token', ['user'])->accessToken;
                     $user_profile->api_token = $token;
                     $user_profile->save();

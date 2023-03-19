@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionsTable extends Migration
+class CreateOtpsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,17 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('otps', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')
                     ->constrained()
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
-            $table->string('reference_id');
-            $table->string('account_name');
-            $table->string('account_number');
-            $table->string('bank_name');
-            $table->float('amount', 11, 2);
-            $table->enum('status', ['successful', 'failed', 'pending', 'cancelled']);
+            $table->foreignUuid('transaction_id')
+                    ->constrained()
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+            $table->string('code');
             $table->timestamps();
         });
     }
@@ -36,6 +35,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('otps');
     }
 }

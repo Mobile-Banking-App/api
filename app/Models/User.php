@@ -48,6 +48,16 @@ class User extends Model
     }
 
     /**
+     * Get all of the otps for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function otps(): HasMany
+    {
+        return $this->hasMany(\App\Models\Otp::class, 'user_id', 'id');
+    }
+
+    /**
      * Get the card associated with the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

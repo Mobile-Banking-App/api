@@ -24,6 +24,19 @@ class TransactionController extends Controller
     }
 
 
+    public function show($id)
+    {
+        $transaction = Transaction::find($id);
+
+        return response()->json([
+            "status" => true,
+            "message" => "Transaction fetched successfully",
+            "transaction" => $transaction
+        ], 200);
+    }
+
+
+
     public function store(Request $request)
     {
         $transactionRequest = new TransactionRequest;
@@ -39,6 +52,25 @@ class TransactionController extends Controller
 
         $transactionRepository = new TransactionRepository;
         return $transactionRepository->store($request->all());
+    }
+
+    public function complete(Request $request, $transactionId)
+    {
+        $validator = \Validator::make($request->all(), [
+            'code' => 'required|exists:otps,code|numeric|digits:6',
+        ]);
+
+
+        if($validator->fails()) {
+            return response()->json([
+                "status" => false,
+                "message" => "Validation error",
+                "errors" => $validator->errors()->all()
+            ], 422);
+        }
+
+        $transactionRepository = new TransactionRepository;
+        return $transactionRepository->complete($request->all(), $transactionId);
     }
 
 

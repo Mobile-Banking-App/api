@@ -47,4 +47,23 @@ class P2PController extends Controller
         return $p2pRepo->store($request->all());
     }
 
+    public function complete(Request $request, $transactionId)
+    {
+        $validator = \Validator::make($request->all(), [
+            'code' => 'required|exists:otps,code|numeric|digits:6',
+        ]);
+
+
+        if($validator->fails()) {
+            return response()->json([
+                "status" => false,
+                "message" => "Validation error",
+                "errors" => $validator->errors()->all()
+            ], 422);
+        }
+
+        $p2pRepo = new P2PRepository;
+        return $p2pRepo->complete($request->all(), $transactionId);
+    }
+
 }

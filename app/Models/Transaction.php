@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transaction extends Model
 {
@@ -31,5 +32,14 @@ class Transaction extends Model
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
+    /**
+     * Get all of the otps for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function otps(): HasMany
+    {
+        return $this->hasMany(\App\Models\Otp::class, 'user_id', 'id');
+    }
 
 }

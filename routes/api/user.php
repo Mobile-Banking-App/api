@@ -41,12 +41,15 @@ Route::middleware(['auth:user-api', 'scopes:user'])->group(function () {
     Route::controller(\App\Http\Controllers\User\TransactionController::class)->prefix('transactions')->group(function () {
         Route::get('', 'index');
         Route::post('', 'store');
+        Route::get('/{transaction}', 'show');
         Route::delete('/{transaction}', 'destroy');
+        Route::post('complete/{transaction_id}', 'complete');
     });
 
     Route::controller(\App\Http\Controllers\User\P2PController::class)->prefix('p2p')->group(function () {
         Route::get('{number}', 'userData');
         Route::post('', 'store');
+        Route::post('complete/{transaction_id}', 'complete');
     });
 
     Route::controller(\App\Http\Controllers\User\CardController::class)->prefix('card')->group(function () {

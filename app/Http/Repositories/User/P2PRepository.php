@@ -18,12 +18,12 @@ class P2PRepository
         $user = User::find(auth()->guard('user-api')->user()->profileable_id);
 
 
-        if ($user->otps->count() > 0) {
-            return response()->json([
-                "status" => false,
-                "message" => "Please complete your last pending transaction before making another one.",
-            ], 400);
-        }
+        // if ($user->otps->count() > 0) {
+        //     return response()->json([
+        //         "status" => false,
+        //         "message" => "Please complete your last pending transaction before making another one.",
+        //     ], 400);
+        // }
 
         if (Hash::check($data['pin'], $user->transaction_pin)) {
             $sufficiency = $this->fundSufficiency($data, $user);

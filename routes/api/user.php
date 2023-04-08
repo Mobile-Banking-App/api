@@ -53,6 +53,7 @@ Route::middleware(['auth:user-api', 'scopes:user'])->group(function () {
     });
 
     Route::controller(\App\Http\Controllers\User\CardController::class)->prefix('card')->group(function () {
+        Route::get('', 'index');
         Route::post('toggleActive', 'requestCard');
         Route::post('request', 'requestCard');
         Route::post('card-pin', 'cardPin');

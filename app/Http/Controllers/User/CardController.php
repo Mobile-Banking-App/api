@@ -10,6 +10,18 @@ use App\Http\Repositories\User\CardRepository;
 
 class CardController extends Controller
 {
+    public function index()
+    {
+        $user = User::find(auth()->gaurd('user-api')->user()->profileable_id);
+
+        return response()->json([
+            "status" => true,
+            "message" => "card deleted successfully",
+            "cards" => $user->card
+        ], 200);
+
+    }
+
     public function requestCard(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -22,6 +22,11 @@ class Card extends Model
         'duress_pin',
     ];
 
+    protected $hidden = [
+        'card_pin',
+        'duress_pin',
+    ];
+
 
     /**
      * Get the user that owns the Card

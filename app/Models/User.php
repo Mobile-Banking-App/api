@@ -32,6 +32,12 @@ class User extends Model
     ];
 
 
+    protected $hidden = [
+        'transaction_pin',
+        'duress_pin',
+        'passcode'
+    ];
+
 
     public function profile()
     {

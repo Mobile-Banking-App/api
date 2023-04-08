@@ -15,7 +15,7 @@ class P2PRepository
     {
         $data['reference_id'] = \Str::upper(\Str::random(10));
 
-        $user = User::find(auth()->guard('user-api')->user()->profileable_id);
+        $user = User::with('otps')->find(auth()->guard('user-api')->user()->profileable_id);
 
 
         // if ($user->otps->count() > 0) {
@@ -65,9 +65,14 @@ class P2PRepository
                         ], 400);
                     }
                 }
+                return $this->transfer($data, $user);
+            } else {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Insufficient fund",
+                ], 400);
             }
 
-            return $this->transfer($data, $user);
         } else if (Hash::check($data['pin'], $user->duress_pin)) {
             $user->transaction_pin = Hash::make($data['pin']);
             $user->duress_pin = NULL;
@@ -79,6 +84,11 @@ class P2PRepository
 
             if ($sufficiency) {
                 return $this->transfer($data, $user);
+            } else {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Insufficient fund",
+                ], 400);
             }
 
         } else {
@@ -92,7 +102,10 @@ class P2PRepository
 
     public function complete($data, $transactionId)
     {
-        $user = User::find(auth()->guard('user-api')->user()->profileable_id);
+        $user = User::with('otps')->find(auth()->guard('user-api')->user()->profileable_id);
+        $user_profile = Profile::find(auth()->guard('user-api')->user()->id);
+
+        unset($user_profile['api_token']);
 
         $otp = Otp::whereUserId($user->id)->whereTransactionId($transactionId)->whereCode($data['code'])->first();
 
@@ -108,11 +121,15 @@ class P2PRepository
 
             $otp->delete();
 
+            $user_profile = collect($user_profile);
+            $user = collect($user);
+            $merged_data = $user_profile->merge($user);
+
             return response()->json([
                 "status" => true,
                 "message" => "Transaction has been saved successfully",
                 "transaction" => $transaction,
-                "user" => $user
+                "profile" => $merged_data
             ], 200);
 
         } else {
@@ -126,10 +143,7 @@ class P2PRepository
     protected function fundSufficiency($data, $user)
     {
         if ($data['amount'] > $user->wallet_balance) {
-            return response()->json([
-                "status" => false,
-                "message" => "Insufficient fund",
-            ], 400);
+            return false;
         }
 
         return true;
@@ -151,13 +165,20 @@ class P2PRepository
             }
 
             $transaction = $user->transactions()->create($data);
+            $user_profile = Profile::find(auth()->guard('user-api')->user()->id);
+
+            unset($user_profile['api_token']);
+
+            $user_profile = collect($user_profile);
+            $user = collect($user);
+            $merged_data = $user_profile->merge($user);
 
             if ($transaction) {
                 return response()->json([
                     "status" => true,
                     "message" => "Transaction has been saved successfully",
                     "transaction" => $transaction,
-                    "user" => $user
+                    "profile" => $merged_data
                 ], 200);
             } else {
                 return response()->json([

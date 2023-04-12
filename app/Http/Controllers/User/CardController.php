@@ -6,17 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Repositories\User\CardRepository;
-
+use App\Models\User;
 
 class CardController extends Controller
 {
     public function index()
     {
-        $user = User::find(auth()->gaurd('user-api')->user()->profileable_id);
+        $user = User::find(auth()->guard('user-api')->user()->profileable_id);
 
         return response()->json([
             "status" => true,
-            "message" => "card deleted successfully",
+            "message" => "card fetched successfully",
             "cards" => $user->card
         ], 200);
 
